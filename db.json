@@ -1,0 +1,19 @@
+{
+  "tareas": [
+    {
+      "id": "1",
+      "texto": "Hacer la compra",
+      "completada": false
+    },
+    {
+      "id": "2",
+      "texto": "Lavar el coche",
+      "completada": false
+    },
+    {
+      "id": "3",
+      "texto": "Preparar la comida",
+      "completada": false
+    }
+  ]
+}

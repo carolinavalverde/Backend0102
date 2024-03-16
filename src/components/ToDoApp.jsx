@@ -1,41 +1,58 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Styles/App.css";
+import {
+  obtenerTareas,
+  agregarTarea as agregarNuevaTarea,
+  actualizarTarea,
+  eliminarTarea as eliminarUnaTarea,
+} from "../helpers/queries.js";
 
 function TodoApp() {
   const [tareas, setTareas] = useState([]);
   const [nuevaTarea, setNuevaTarea] = useState("");
 
-  const agregarTarea = () => {
+  useEffect(() => {
+    const cargarTareas = async () => {
+      const tareasDesdeAPI = await obtenerTareas();
+      setTareas(tareasDesdeAPI);
+    };
+    cargarTareas();
+  }, []);
+
+  const agregarTarea = async () => {
     if (nuevaTarea.trim() !== "") {
-      const nuevasTareas = [
-        ...tareas,
-        { id: Date.now(), texto: nuevaTarea, completada: false },
-      ];
-      setTareas(nuevasTareas);
-      setNuevaTarea("");
-      localStorage.setItem("tareas", JSON.stringify(nuevasTareas));
+      const tareaNueva = { texto: nuevaTarea, completada: false };
+      const tareaAgregada = await agregarNuevaTarea(tareaNueva);
+      if (tareaAgregada) {
+        setTareas([...tareas, tareaAgregada]);
+        setNuevaTarea("");
+      }
     }
   };
 
-  const marcarComoHecha = (id) => {
-    const nuevasTareas = tareas.map((tarea) =>
-      tarea.id === id ? { ...tarea, completada: !tarea.completada } : tarea
-    );
-    setTareas(nuevasTareas);
-    localStorage.setItem("tareas", JSON.stringify(nuevasTareas));
+  const marcarComoHecha = async (id) => {
+    const tareaActualizada = await actualizarTarea(id, {
+      ...tareas.find((tarea) => tarea.id === id),
+      completada: !tareas.find((tarea) => tarea.id === id).completada,
+    });
+    if (tareaActualizada) {
+      setTareas(
+        tareas.map((tarea) =>
+          tarea.id === id ? { ...tarea, completada: !tarea.completada } : tarea
+        )
+      );
+    }
   };
 
-  const eliminarTareasCompletadas = () => {
-    const nuevasTareas = tareas.filter((tarea) => !tarea.completada);
-    setTareas(nuevasTareas);
-    localStorage.setItem("tareas", JSON.stringify(nuevasTareas));
+  const eliminarTareasCompletadas = async () => {
+    const tareasNoCompletadas = tareas.filter((tarea) => !tarea.completada);
+    const tareasEliminadas = tareas.filter((tarea) => tarea.completada);
+    tareasEliminadas.forEach(async (tarea) => {
+      await eliminarUnaTarea(tarea.id);
+    });
+    setTareas(tareasNoCompletadas);
   };
-
-  useEffect(() => {
-    const tareasGuardadas = JSON.parse(localStorage.getItem("tareas")) || [];
-    setTareas(tareasGuardadas);
-  }, []);
 
   return (
     <div className="container m-2 p-3">
@@ -46,7 +63,7 @@ function TodoApp() {
         <input
           type="text"
           className="form-control"
-          placeholder="Agregue su tarea aquí"
+          placeholder="Agregue una tarea"
           value={nuevaTarea}
           onChange={(e) => setNuevaTarea(e.target.value)}
         />
