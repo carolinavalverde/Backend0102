@@ -1,7 +1,7 @@
 ## **ToDo List App**
 
 ## 1. Descripción
-Esta es una aplicación simple de lista de tareas desarrollada con React y Bootstrap.
+Esta es una aplicación de lista de tareas desarrollada con React y Bootstrap.
 
 ## 2. Características Principales
 
@@ -21,8 +21,12 @@ Bootstrap v5.3.2: Utilización de componentes y estilos predefinidos para un dis
 
 JavaScript: Programación del comportamiento dinámico de la aplicación.
 
+SweetAlert: notificaciones bonitas para el usuario.
+
+Json Server: simula base de datos.
+
 ## 5. Instalación y Uso
-Clona el repositorio: git clone https://github.com/carolinavalverde/ReactEj0405
+Clona el repositorio: git clone https://github.com/carolinavalverde/E01-ListaDeTareasFront
 Navega al directorio del proyecto: cd ReactEj0405
 Instala las dependencias: npm install
 Inicia la aplicación: npm start
@@ -43,5 +47,4 @@ Carolina Valverde Vasile
 ## 8.Licencia
 Este proyecto no cuenta con licencia.
 
-# ReactEj0405
 # Backend0102
