@@ -2,17 +2,17 @@
   "tareas": [
     {
       "id": "1",
-      "texto": "Hacer la compra",
+      "texto": "Hacer sanguchitos de miga para la merienda",
       "completada": false
     },
     {
       "id": "2",
-      "texto": "Lavar el coche",
+      "texto": "Jugar al Hollow Knight",
       "completada": false
     },
     {
       "id": "3",
-      "texto": "Preparar la comida",
+      "texto": "Codear los ejercicios de Rolling",
       "completada": false
     }
   ]

@@ -1,3 +1,13 @@
+import Swal from "sweetalert2";
+
+const mostrarAlertaError = (mensaje) => {
+  Swal.fire({
+    icon: "error",
+    title: "Error",
+    text: mensaje,
+  });
+};
+
 const API_URL = import.meta.env.VITE_API_TAREAS;
 
 export const obtenerTareas = async () => {
@@ -9,6 +19,7 @@ export const obtenerTareas = async () => {
     return await response.json();
   } catch (error) {
     console.error("Error:", error);
+    mostrarAlertaError(error.message);
     return [];
   }
 };
@@ -28,6 +39,7 @@ export const agregarTarea = async (nuevaTarea) => {
     return await response.json();
   } catch (error) {
     console.error("Error:", error);
+    mostrarAlertaError(error.message);
     return null;
   }
 };
@@ -47,6 +59,7 @@ export const actualizarTarea = async (id, tareaActualizada) => {
     return await response.json();
   } catch (error) {
     console.error("Error:", error);
+    mostrarAlertaError(error.message);
     return null;
   }
 };
@@ -62,6 +75,7 @@ export const eliminarTarea = async (id) => {
     return true;
   } catch (error) {
     console.error("Error:", error);
+    mostrarAlertaError(error.message);
     return false;
   }
 };
