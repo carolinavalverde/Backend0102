@@ -1,11 +1,6 @@
 {
   "tareas": [
     {
-      "id": "1",
-      "texto": "Hacer sanguchitos de miga para la merienda",
-      "completada": false
-    },
-    {
       "id": "2",
       "texto": "Jugar al Hollow Knight",
       "completada": false
@@ -13,6 +8,11 @@
     {
       "id": "3",
       "texto": "Codear los ejercicios de Rolling",
+      "completada": false
+    },
+    {
+      "id": "21bf",
+      "texto": "hacer ejercicio",
       "completada": false
     }
   ]
