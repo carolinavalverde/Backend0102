@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import "../Styles/App.css";
 import { useForm } from "react-hook-form";
 import { editarTarea, obtenerTareas } from "../helpers/queries";
 import { useParams } from "react-router-dom";
 
 const EditarTarea = () => {
   const { id } = useParams();
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
   const [tarea, setTarea] = useState(null);
 
   useEffect(() => {
     const cargarTarea = async () => {
       try {
         const tareas = await obtenerTareas();
-        const tareaData = tareas.find(t => t.id === id);
+        const tareaData = tareas.find((t) => t.id === id);
         if (tareaData) {
           setTarea(tareaData);
           setValue("texto", tareaData.texto);
@@ -57,9 +63,12 @@ const EditarTarea = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-3">
-        <label htmlFor="texto" className="form-label">
+    <form onSubmit={handleSubmit(onSubmit)} className="container p-4">
+      <div className="body container text-center fw-bold rounded">
+        Editar Tarea
+      </div>
+      <div className="m-3">
+        <label htmlFor="texto" className="form-label text-center">
           Texto de la tarea
         </label>
         <input
@@ -70,7 +79,7 @@ const EditarTarea = () => {
         />
         {errors.texto && <p className="text-danger">{errors.texto.message}</p>}
       </div>
-      <div className="mb-3">
+      <div className="m-3">
         <label htmlFor="completada" className="form-label">
           Completada
         </label>
@@ -83,9 +92,11 @@ const EditarTarea = () => {
           <option value={false}>No</option>
         </select>
       </div>
-      <button type="submit" className="btn btn-primary">
-        Guardar
-      </button>
+      <div className="d-flex justify-content-center">
+        <button type="submit" className="btn btn-warning">
+          Guardar
+        </button>
+      </div>
     </form>
   );
 };
