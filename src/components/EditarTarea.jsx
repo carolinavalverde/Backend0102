@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
-import { editarTarea, obtenerTareaPorId } from "../helpers/queries";
+import { editarTarea, obtenerTareas } from "../helpers/queries";
+import { useParams } from "react-router-dom";
 
-const EditarTarea = ({ id }) => {
+const EditarTarea = () => {
+  const { id } = useParams();
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
   const [tarea, setTarea] = useState(null);
 
   useEffect(() => {
     const cargarTarea = async () => {
       try {
-        const tareaData = await obtenerTareaPorId(id);
+        const tareas = await obtenerTareas();
+        const tareaData = tareas.find(t => t.id === id);
         if (tareaData) {
           setTarea(tareaData);
           setValue("texto", tareaData.texto);
