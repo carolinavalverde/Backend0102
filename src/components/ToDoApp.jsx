@@ -8,12 +8,10 @@ import {
   actualizarTarea,
   eliminarTarea,
 } from "../helpers/queries.js";
-import EditarTareaModal from "./EditarTareaModal";
 
 function TodoApp() {
   const [tareas, setTareas] = useState([]);
   const [nuevaTarea, setNuevaTarea] = useState("");
-  const [tareaEditando, setTareaEditando] = useState(null);
 
   useEffect(() => {
     const cargarTareas = async () => {
@@ -72,15 +70,43 @@ function TodoApp() {
     }
   };
 
-  const abrirModalEditarTarea = (tarea) => {
-    console.log("Abriendo modal para editar tarea:", tarea);
-    setTareaEditando(tarea);
+  const eliminarTareasCompletadas = async () => {
+    const tareasCompletadas = tareas.filter((tarea) => tarea.completada);
+  
+    // Verifica si hay tareas completadas antes de continuar
+    if (tareasCompletadas.length === 0) {
+      Swal.fire("No hay tareas completadas", "", "info");
+      return;
+    }
+  
+    const confirmacion = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Se eliminarán todas las tareas completadas",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+  
+    if (confirmacion.isConfirmed) {
+      const idsTareasCompletadas = tareasCompletadas.map((tarea) => tarea.id);
+      const eliminadas = await Promise.all(
+        idsTareasCompletadas.map((id) => eliminarTarea(id))
+      );
+  
+      if (eliminadas.every((eliminada) => eliminada)) {
+        setTareas((prevTareas) =>
+          prevTareas.filter((tarea) => !idsTareasCompletadas.includes(tarea.id))
+        );
+        Swal.fire("Tareas eliminadas", "Las tareas completadas han sido eliminadas", "success");
+      } else {
+        Swal.fire("Error", "Hubo un problema al eliminar las tareas completadas", "error");
+      }
+    }
   };
-
-  const cerrarModalEditarTarea = () => {
-    console.log("Cerrando modal de editar tarea");
-    setTareaEditando(null);
-  };
+  
 
   return (
     <div className="container m-2 p-3">
@@ -128,12 +154,6 @@ function TodoApp() {
               </span>
               <div className="ms-auto">
                 <button
-                  className="btn btn-outline-primary me-2"
-                  onClick={() => abrirModalEditarTarea(tarea)}
-                >
-                  <i className="bi bi-pencil"></i>
-                </button>
-                <button
                   className="btn btn-outline-danger"
                   onClick={() => eliminarTareaPorId(tarea.id)}
                 >
@@ -149,20 +169,13 @@ function TodoApp() {
         <div className="d-flex justify-content-center">
           <button
             className="btn btn-success mt-3"
-            onClick={eliminarTareasCompletadas}
+           onClick={eliminarTareasCompletadas}
           >
             Eliminar Tareas hechas
           </button>
         </div>
       )}
 
-      {tareaEditando && (
-        <EditarTareaModal
-          tareaEditando={tareaEditando}
-          cerrarModalEditarTarea={cerrarModalEditarTarea}
-          setTareas={setTareas}
-        />
-      )}
     </div>
   );
 }

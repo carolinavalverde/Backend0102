@@ -1,18 +1,18 @@
 {
   "tareas": [
     {
-      "id": "2",
-      "texto": "Jugar al Hollow Knight",
-      "completada": false
-    },
-    {
-      "id": "3",
-      "texto": "Codear los ejercicios de Rolling",
-      "completada": false
-    },
-    {
       "id": "21bf",
       "texto": "hacer ejercicio",
+      "completada": false
+    },
+    {
+      "id": "b877",
+      "texto": "saludar al lobito",
+      "completada": false
+    },
+    {
+      "id": "01a6",
+      "texto": "leer",
       "completada": false
     }
   ]
