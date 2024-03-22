@@ -1,4 +1,4 @@
-## **ToDo List App**
+## **Lista de Tareas**
 
 ## 1. Descripción
 Esta es una aplicación de lista de tareas desarrollada con React y Bootstrap.
@@ -12,7 +12,10 @@ Estado Reactivo: Utiliza el estado de React para mantener la coherencia de la in
 ## 3. Despliegue
 
 La aplicación está desplegada y disponible en: 
-https://todolist-0405.netlify.app/
+https://lista-de-tareas-cv.netlify.app/
+
+El Backend se encuentra en:
+https://e02-lista-de-tareas-back.vercel.app/
 
 ## 4. Tecnologías Utilizadas
 React: Desarrollo de la interfaz de usuario modular y reactiva.
@@ -29,8 +32,6 @@ Json Server: simula base de datos.
 Clona el repositorio: git clone https://github.com/carolinavalverde/E01-ListaDeTareasFront
 Navega al directorio del proyecto: cd ReactEj0405
 Instala las dependencias: npm install
-Inicia la aplicación: npm start
-La aplicación estará disponible en http://localhost:3000 en tu navegador.
 
 ## 6. Contribución
 Si deseas contribuir a este proyecto, sigue los pasos a continuación:
