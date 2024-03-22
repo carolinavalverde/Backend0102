@@ -8,12 +8,12 @@ import {
   actualizarTarea,
   eliminarTarea,
 } from "../helpers/queries.js";
+import EditarTareaModal from "./EditarTareaModal";
 
 function TodoApp() {
   const [tareas, setTareas] = useState([]);
   const [nuevaTarea, setNuevaTarea] = useState("");
   const [tareaEditando, setTareaEditando] = useState(null);
-  const [textoTareaEditando, setTextoTareaEditando] = useState("");
 
   useEffect(() => {
     const cargarTareas = async () => {
@@ -40,21 +40,12 @@ function TodoApp() {
       completada: !tareas.find((tarea) => tarea.id === id).completada,
     });
     if (tareaActualizada) {
-      setTareas(
-        tareas.map((tarea) =>
+      setTareas((prevTareas) =>
+        prevTareas.map((tarea) =>
           tarea.id === id ? { ...tarea, completada: !tarea.completada } : tarea
         )
       );
     }
-  };
-
-  const eliminarTareasCompletadas = async () => {
-    const tareasNoCompletadas = tareas.filter((tarea) => !tarea.completada);
-    const tareasEliminadas = tareas.filter((tarea) => tarea.completada);
-    tareasEliminadas.forEach(async (tarea) => {
-      await eliminarTarea(tarea.id);
-    });
-    setTareas(tareasNoCompletadas);
   };
 
   const eliminarTareaPorId = async (id) => {
@@ -71,7 +62,9 @@ function TodoApp() {
     if (confirmacion.isConfirmed) {
       const eliminada = await eliminarTarea(id);
       if (eliminada) {
-        setTareas(tareas.filter((tarea) => tarea.id !== id));
+        setTareas((prevTareas) =>
+          prevTareas.filter((tarea) => tarea.id !== id)
+        );
         Swal.fire("Eliminada", "La tarea ha sido eliminada", "success");
       } else {
         Swal.fire("Error", "Hubo un problema al eliminar la tarea", "error");
@@ -80,33 +73,13 @@ function TodoApp() {
   };
 
   const abrirModalEditarTarea = (tarea) => {
+    console.log("Abriendo modal para editar tarea:", tarea);
     setTareaEditando(tarea);
-    setTextoTareaEditando(tarea.texto);
   };
 
   const cerrarModalEditarTarea = () => {
+    console.log("Cerrando modal de editar tarea");
     setTareaEditando(null);
-    setTextoTareaEditando("");
-  };
-
-  const editarTarea = async () => {
-    if (textoTareaEditando.trim() !== "") {
-      const tareaActualizada = await actualizarTarea(tareaEditando.id, {
-        ...tareaEditando,
-        texto: textoTareaEditando,
-      });
-      if (tareaActualizada) {
-        setTareas(
-          tareas.map((tarea) =>
-            tarea.id === tareaEditando.id ? tareaActualizada : tarea
-          )
-        );
-        cerrarModalEditarTarea();
-        Swal.fire("Editada", "La tarea ha sido editada", "success");
-      } else {
-        Swal.fire("Error", "Hubo un problema al editar la tarea", "error");
-      }
-    }
   };
 
   return (
@@ -184,44 +157,11 @@ function TodoApp() {
       )}
 
       {tareaEditando && (
-        <div className="modal" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Editar Tarea</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={cerrarModalEditarTarea}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={textoTareaEditando}
-                  onChange={(e) => setTextoTareaEditando(e.target.value)}
-                />
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={cerrarModalEditarTarea}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={editarTarea}
-                >
-                  Aceptar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EditarTareaModal
+          tareaEditando={tareaEditando}
+          cerrarModalEditarTarea={cerrarModalEditarTarea}
+          setTareas={setTareas}
+        />
       )}
     </div>
   );
