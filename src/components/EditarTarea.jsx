@@ -19,7 +19,7 @@ const EditarTarea = () => {
     const cargarTarea = async () => {
       try {
         const tareas = await obtenerTareas();
-        const tareaData = tareas.find((t) => t.id === id);
+        const tareaData = tareas.find((t) => t._id === id);
         if (tareaData) {
           setTarea(tareaData);
           setValue("texto", tareaData.texto);

@@ -36,8 +36,8 @@ function TodoApp() {
 
   const marcarComoHecha = async (id) => {
     const tareaActualizada = await actualizarTarea(id, {
-      ...tareas.find((tarea) => tarea.id === id),
-      completada: !tareas.find((tarea) => tarea.id === id).completada,
+      ...tareas.find((tarea) => tarea._id === id),
+      completada: !tareas.find((tarea) => tarea._id === id).completada,
     });
     if (tareaActualizada) {
       setTareas((prevTareas) =>
@@ -63,7 +63,7 @@ function TodoApp() {
       const eliminada = await eliminarTarea(id);
       if (eliminada) {
         setTareas((prevTareas) =>
-          prevTareas.filter((tarea) => tarea.id !== id)
+          prevTareas.filter((tarea) => tarea._id !== id)
         );
         Swal.fire("Eliminada", "La tarea ha sido eliminada", "success");
       } else {
@@ -74,7 +74,7 @@ function TodoApp() {
 
   const abrirModalEditarTarea = (tarea) => {
     setTareaEditando(tarea);
-    console.log("ID de tarea editando:", tarea.id);
+    console.log("ID de tarea editando:", tarea._id);
   };
 
   const cerrarModalEditarTarea = () => {
@@ -107,17 +107,17 @@ function TodoApp() {
         <ul className="list-group">
           {tareas.map((tarea) => (
             <li
-              key={tarea.id}
+              key={tarea._id}
               className="list-group-item d-flex align-items-center"
             >
               <input
                 type="checkbox"
                 checked={tarea.completada}
-                onChange={() => marcarComoHecha(tarea.id)}
+                onChange={() => marcarComoHecha(tarea._id)}
                 className="me-2 border-2 border-warning-subtle"
               />
               <span
-                onClick={() => marcarComoHecha(tarea.id)}
+                onClick={() => marcarComoHecha(tarea._id)}
                 style={{
                   cursor: "pointer",
                   textDecoration: tarea.completada ? "line-through" : "none",
@@ -134,7 +134,7 @@ function TodoApp() {
                 </button>
                 <button
                   className="btn btn-outline-danger mx-2 my-1"
-                  onClick={() => eliminarTareaPorId(tarea.id)}
+                  onClick={() => eliminarTareaPorId(tarea._id)}
                 >
                   Eliminar
                 </button>
